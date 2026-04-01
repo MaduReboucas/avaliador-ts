@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useForm } from "./hooks/useForm";
 
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { FiSend } from "react-icons/fi";
 
 type FormFields = {
   name: string;
@@ -40,13 +41,8 @@ function App() {
     <Thanks />,
   ];
 
-  const {
-    currentStep,
-    currentComponent,
-    changeStep,
-    isFirstStep,
-    isLastStep,
-  } = useForm(formComponents);
+  const { currentStep, currentComponent, changeStep, isFirstStep, isLastStep } =
+    useForm(formComponents);
 
   return (
     <div className="App">
@@ -71,10 +67,15 @@ function App() {
               <span>Voltar</span>
             </button>
 
-            {!isLastStep && (
+            {!isLastStep ? (
               <button type="submit">
                 <span>Avançar</span>
                 <GrFormNext />
+              </button>
+            ) : (
+              <button type="submit">
+                <span>Enviar</span>
+                <FiSend />
               </button>
             )}
           </div>
