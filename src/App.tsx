@@ -4,9 +4,21 @@ import UserForm from "./components/UserForm";
 import Thanks from "./components/Thanks";
 import ReviewForm from "./components/ReviewForm";
 
+import { useForm } from "./hooks/useForm";
+
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 
 function App() {
+  const formComponents = [<UserForm />, <ReviewForm />, <Thanks />];
+
+  const {
+    currentStep,
+    currentComponent,
+    changeStep,
+    isFirstStep,
+    isLastStep,
+  } = useForm(formComponents);
+
   return (
     <div className="App">
       <div className="header">
@@ -18,20 +30,26 @@ function App() {
       </div>
       <div className="form-container">
         <p>passos</p>
-        <form>
+        <form onSubmit={(event) => changeStep(currentStep + 1, event)}>
           <div className="inpust-container">
-            <UserForm />
+            {currentComponent}
           </div>
           <div className="actions">
-            <button>
+            <button
+              type="button"
+              onClick={() => changeStep(currentStep - 1)}
+              disabled={isFirstStep}
+            >
               <GrFormPrevious />
               <span>Voltar</span>
             </button>
 
-            <button>
-              <span>Avançar</span>
-              <GrFormNext />
-            </button>
+            {!isLastStep && (
+              <button type="submit">
+                <span>Avançar</span>
+                <GrFormNext />
+              </button>
+            )}
           </div>
         </form>
       </div>
