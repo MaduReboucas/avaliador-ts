@@ -36,7 +36,7 @@ function App() {
 
   const formComponents = [
     <UserForm data={data} updateFieldHandler={updateFieldHandler} />,
-    <ReviewForm />,
+    <ReviewForm data={data} updateFieldHandler={updateFieldHandler} />,
     <Thanks />,
   ];
 
