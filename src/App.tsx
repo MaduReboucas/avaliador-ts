@@ -6,15 +6,47 @@ import ReviewForm from "./components/ReviewForm";
 
 import Steps from "./components/Steps";
 
+import { useState } from "react";
 import { useForm } from "./hooks/useForm";
 
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 
-function App() {
-  const formComponents = [<UserForm />, <ReviewForm />, <Thanks />];
+type FormFields = {
+  name: string;
+  email: string;
+  review: string;
+  comment: string;
+};
 
-  const { currentStep, currentComponent, changeStep, isFirstStep, isLastStep } =
-    useForm(formComponents);
+const formTemplate: FormFields = {
+  name: "",
+  email: "",
+  review: "",
+  comment: "",
+};
+
+function App() {
+  const [data, setData] = useState(formTemplate);
+
+  const updateFieldHandler = (key: string, value: string) => {
+    setData((prev) => {
+      return { ...prev, [key]: value };
+    });
+  };
+
+  const formComponents = [
+    <UserForm data={data} updateFieldHandler={updateFieldHandler} />,
+    <ReviewForm />,
+    <Thanks />,
+  ];
+
+  const {
+    currentStep,
+    currentComponent,
+    changeStep,
+    isFirstStep,
+    isLastStep,
+  } = useForm(formComponents);
 
   return (
     <div className="App">
@@ -26,7 +58,7 @@ function App() {
         </p>
       </div>
       <div className="form-container">
-        <Steps />
+        <Steps currentStep={currentStep} />
         <form onSubmit={(event) => changeStep(currentStep + 1, event)}>
           <div className="inpust-container">{currentComponent}</div>
           <div className="actions">
